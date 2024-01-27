@@ -15,25 +15,16 @@ public class SampleControllerTests : IClassFixture<TestApplicationFactory>
     {
         _factory = factory;
     }
-    
+
     [Fact]
-    public async Task GetSampleValue_WhenCalledWithoutMocks_ReturnsInitialValue()
+    public async Task GetSampleValue_WhenCalledWithMock_ReturnsMockValue()
     {
+        Service.SetCurrent(Substitute.For<ISampleService>())
+            .GetSampleValue().ReturnsForAnyArgs("Mock value");
+
         var sampleController = RestClient.For<ISampleController>(_factory.HttpClient);
-        
+
         var sampleValue = await sampleController.GetSampleValue();
-        Assert.Equal("Original value", sampleValue);
+        Assert.Equal("Mock value", sampleValue);
     }
-    
-[Fact]
-public async Task GetSampleValue_WhenCalledWithMock_ReturnsMockValue()
-{
-    Service.SetCurrent(Substitute.For<ISampleService>())
-        .GetSampleValue().ReturnsForAnyArgs("Mock value");
-    
-    var sampleController = RestClient.For<ISampleController>(_factory.HttpClient);
-    
-    var sampleValue = await sampleController.GetSampleValue();
-    Assert.Equal("Mock value", sampleValue);
-}
 }

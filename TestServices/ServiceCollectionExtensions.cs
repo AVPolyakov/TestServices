@@ -129,7 +129,7 @@ public static class ServiceCollectionExtensions
         foreach (var methodInfo in serviceType.GetMethods())
             GenerateMethod(parent, typeBuilder, methodInfo);
 
-        return typeBuilder.CreateType();
+        return typeBuilder.CreateType()!;
     }
 
     private static readonly Type[] _parameterTypes = { typeof(ServiceDescriptor), typeof(IServiceProvider) };
